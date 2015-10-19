@@ -1,0 +1,2 @@
+project(PageRank_By_Conv)
+add_graphlab_executable(PageRank_By_Conv pagerank2.cpp)
