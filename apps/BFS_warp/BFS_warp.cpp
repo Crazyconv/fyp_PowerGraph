@@ -1,6 +1,9 @@
 #include <graphlab.hpp>
 #include <string>
 #include <stdlib.h>
+#include <graphlab/warp.hpp>
+
+int source = -1;
 
 struct vertex_data : graphlab::IS_POD_TYPE {
 	int level;
@@ -12,67 +15,41 @@ struct gather_data : graphlab::IS_POD_TYPE {
 	int level;
 	int parent;
 	gather_data(int level = -1, int parent = -1): level(level), parent(parent) {}
-
-	gather_data & operator+=(const gather_data & other){
-		if(level == -1){
-			level = other.level;
-			parent = other.parent;
-		}
-		return *this;
-	}
-};
-
-struct message_data: graphlab::IS_POD_TYPE {
-	int source;
-	message_data(int source = -1): source(source){}
-
-	message_data & operator+=(const message_data & other){
-		return *this;
-	}
 };
 
 typedef graphlab::empty edge_data;
 typedef graphlab::distributed_graph<vertex_data, edge_data> graph_type;
+typedef graphlab::warp::warp_engine<graph_type> engine_type;
 
-class BFS: public graphlab::ivertex_program<graph_type, gather_data, message_data>, public graphlab::IS_POD_TYPE{
-private:
-	bool source = false;
-public:
-	void init(icontext_type& context, const vertex_type& vertex, const message_data& message) {
-		if(message.source == vertex.id()){
-			source = true;
-		}
-	} 
+void init_vertex(graph_type::vertex_type& vertex) {
+	if(vertex.id() == source)
+		vertex.data().level = 0;
+}
 
-	edge_dir_type gather_edges(icontext_type& context, const vertex_type& vertex) const{
-		if(source)
-			return graphlab::NO_EDGES;
-		else
-			return graphlab::IN_EDGES;
+gather_data BFS_map(graph_type::edge_type edge, graph_type::vertex_type other) {
+	return gather_data(other.data().level, other.id());
+}
+
+void BFS_combine(gather_data& g1, const gather_data& g2) {
+	if(g1.level == -1){
+		g1.level = g2.level;
+		g1.parent = g2.parent;
 	}
+}
 
-	gather_data gather(icontext_type& context, const vertex_type& vertex, edge_type& edge) const{
-		return gather_data(edge.source().data().level, edge.source().id());
-	}
+void BFS_update_function(engine_type::context& context, 
+	graph_type::vertex_type vertex) {
 
-	void apply(icontext_type& context, vertex_type& vertex, const gather_type& total){
-		if(source){
-			vertex.data().level = 0;
+	if(vertex.data().level < 0){
+		gather_data result = graphlab::warp::map_reduce_neighborhood(vertex, graphlab::IN_EDGES, BFS_map, BFS_combine);
+		if(result.level == -1){
+			context.signal(vertex);
 		} else {
-			if(((gather_data)total).level < 0)
-				context.signal(vertex);
-			else{
-				vertex.data().level = total.level + 1;
-				vertex.data().parent = total.parent;
-			}
+			vertex.data().level = result.level + 1;
+			vertex.data().parent = result.parent;
 		}
 	}
-
-	edge_dir_type scatter_edges(icontext_type& context, const vertex_type& vertex) const{
-		return graphlab::NO_EDGES;
-	}
-	void scatter(icontext_type& context, const vertex_type& vertex, edge_type& edge) const{ }
-};
+}
 
 bool line_parser(graph_type& graph, const std::string& filename, const std::string& textline){
 	std::stringstream strm(textline);
@@ -109,7 +86,6 @@ int main(int argc, char** argv) {
 	std::string graph_dir;
 	std::string saveprefix;
 	size_t powerlaw = 0;
-	int source = -1;
 
 	// Parse command line options -----------------------------------------------
 	graphlab::command_line_options clopts("PageRank algorithm.");
@@ -153,10 +129,11 @@ int main(int argc, char** argv) {
 	dc.cout() << "#vertices: " << graph.num_vertices()
 	        << " #edges:" << graph.num_edges() << std::endl;
 
+	graph.transform_vertices(init_vertex);
 	// Running The Engine -------------------------------------------------------
-	graphlab::omni_engine<BFS> engine(dc, graph, "sync");
-
-	engine.signal_all(message_data(source));
+	engine_type engine(dc, graph);
+	engine.set_update_function(BFS_update_function);
+	engine.signal_all();
 	engine.start();
 
 	dc.cout() << engine.num_updates()
