@@ -2,19 +2,21 @@
 #include <string>
 #include <stdlib.h>
 
+int source = -1;
+
 struct vertex_data : graphlab::IS_POD_TYPE {
 	int level;
 	int parent;
 	vertex_data(int level = -1, int parent = -1) : level(level), parent(parent) {}
 };
 
-struct gather_data : graphlab::IS_POD_TYPE {
+struct message_data : graphlab::IS_POD_TYPE {
 	int level;
 	int parent;
-	gather_data(int level = -1, int parent = -1): level(level), parent(parent) {}
+	message_data(int level = -1, int parent = -1): level(level), parent(parent) {}
 
-	gather_data & operator+=(const gather_data & other){
-		if(level == -1){
+	message_data & operator+=(const message_data & other){
+		if(level < 0 || other.level >= 0 && level > other.level){
 			level = other.level;
 			parent = other.parent;
 		}
@@ -22,56 +24,39 @@ struct gather_data : graphlab::IS_POD_TYPE {
 	}
 };
 
-struct message_data: graphlab::IS_POD_TYPE {
-	int source;
-	message_data(int source = -1): source(source){}
-
-	message_data & operator+=(const message_data & other){
-		return *this;
-	}
-};
-
 typedef graphlab::empty edge_data;
 typedef graphlab::distributed_graph<vertex_data, edge_data> graph_type;
 
-class BFS: public graphlab::ivertex_program<graph_type, gather_data, message_data>, public graphlab::IS_POD_TYPE{
+class BFS: public graphlab::ivertex_program<graph_type, graphlab::empty, message_data>, public graphlab::IS_POD_TYPE{
 private:
-	bool source = false;
+	bool new_frontier = false;
+	message_data state;
 public:
 	void init(icontext_type& context, const vertex_type& vertex, const message_data& message) {
-		if(message.source == vertex.id()){
-			source = true;
-		}
+		state = message;
 	} 
 
 	edge_dir_type gather_edges(icontext_type& context, const vertex_type& vertex) const{
-		if(source)
-			return graphlab::NO_EDGES;
-		else
-			return graphlab::IN_EDGES;
-	}
-
-	gather_data gather(icontext_type& context, const vertex_type& vertex, edge_type& edge) const{
-		return gather_data(edge.source().data().level, edge.source().id());
+		return graphlab::NO_EDGES;
 	}
 
 	void apply(icontext_type& context, vertex_type& vertex, const gather_type& total){
-		if(source){
-			vertex.data().level = 0;
-		} else {
-			if(((gather_data)total).level < 0)
-				context.signal(vertex);
-			else{
-				vertex.data().level = total.level + 1;
-				vertex.data().parent = total.parent;
-			}
+		if(vertex.data().level < 0 && state.level >= 0){
+			new_frontier = true;
+			vertex.data().level = state.level;
+			vertex.data().parent = state.parent;
 		}
 	}
 
 	edge_dir_type scatter_edges(icontext_type& context, const vertex_type& vertex) const{
-		return graphlab::NO_EDGES;
+		if(new_frontier)
+			return graphlab::OUT_EDGES;
+		else
+			return graphlab::NO_EDGES;
 	}
-	void scatter(icontext_type& context, const vertex_type& vertex, edge_type& edge) const{ }
+	void scatter(icontext_type& context, const vertex_type& vertex, edge_type& edge) const{
+		context.signal(edge.target(), message_data(vertex.data().level + 1, vertex.id()));
+	}
 };
 
 bool line_parser(graph_type& graph, const std::string& filename, const std::string& textline){
@@ -109,7 +94,6 @@ int main(int argc, char** argv) {
 	std::string graph_dir;
 	std::string saveprefix;
 	size_t powerlaw = 0;
-	int source = -1;
 
 	// Parse command line options -----------------------------------------------
 	graphlab::command_line_options clopts("PageRank algorithm.");
@@ -156,7 +140,7 @@ int main(int argc, char** argv) {
 	// Running The Engine -------------------------------------------------------
 	graphlab::omni_engine<BFS> engine(dc, graph, "sync");
 
-	engine.signal_all(message_data(source));
+	engine.signal(source, message_data(0, source));
 	engine.start();
 
 	dc.cout() << engine.num_updates()
