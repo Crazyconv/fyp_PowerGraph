@@ -65,21 +65,21 @@ public:
 	void scatter(icontext_type& context, const vertex_type& vertex, edge_type& edge) const{ }
 };
 
-bool line_parser(graph_type& graph, const std::string& filename, const std::string& textline){
-	std::stringstream strm(textline);
-	graphlab::vertex_id_type vid;
+// bool line_parser(graph_type& graph, const std::string& filename, const std::string& textline){
+// 	std::stringstream strm(textline);
+// 	graphlab::vertex_id_type vid;
 
-	strm >> vid;
-	graph.add_vertex(vid, vertex_data());
-	while(1){
-		graphlab::vertex_id_type other_vid;
-		strm >> other_vid;
-		if(strm.fail())
-			return true;
-		graph.add_edge(vid, other_vid);
-	}
-	return true;
-}
+// 	strm >> vid;
+// 	graph.add_vertex(vid, vertex_data());
+// 	while(1){
+// 		graphlab::vertex_id_type other_vid;
+// 		strm >> other_vid;
+// 		if(strm.fail())
+// 			return true;
+// 		graph.add_edge(vid, other_vid);
+// 	}
+// 	return true;
+// }
 
 class graph_writer{
 public:

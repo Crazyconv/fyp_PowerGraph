@@ -59,21 +59,21 @@ public:
 	}
 };
 
-bool line_parser(graph_type& graph, const std::string& filename, const std::string& textline){
-	std::stringstream strm(textline);
-	graphlab::vertex_id_type vid;
+// bool line_parser(graph_type& graph, const std::string& filename, const std::string& textline){
+// 	std::stringstream strm(textline);
+// 	graphlab::vertex_id_type vid;
 
-	strm >> vid;
-	graph.add_vertex(vid, vertex_data());
-	while(1){
-		graphlab::vertex_id_type other_vid;
-		strm >> other_vid;
-		if(strm.fail())
-			return true;
-		graph.add_edge(vid, other_vid);
-	}
-	return true;
-}
+// 	strm >> vid;
+// 	graph.add_vertex(vid, vertex_data());
+// 	while(1){
+// 		graphlab::vertex_id_type other_vid;
+// 		strm >> other_vid;
+// 		if(strm.fail())
+// 			return true;
+// 		graph.add_edge(vid, other_vid);
+// 	}
+// 	return true;
+// }
 
 class graph_writer{
 public:
@@ -93,6 +93,7 @@ int main(int argc, char** argv) {
 	
 	std::string graph_dir;
 	std::string saveprefix;
+	std::string format;
 	size_t powerlaw = 0;
 
 	// Parse command line options -----------------------------------------------
@@ -108,6 +109,8 @@ int main(int argc, char** argv) {
 		"sequence of files with prefix saveprefix");
 	clopts.attach_option("source", source,
 		"The source vertice");
+	clopts.attach_option("format", format,
+		"The graph format");
 
 	if(!clopts.parse(argc, argv)) {
 		dc.cout() << "Error in parsing command line arguments." << std::endl;
@@ -120,8 +123,12 @@ int main(int argc, char** argv) {
 		dc.cout() << "Loading synthetic Powerlaw graph." << std::endl;
 		graph.load_synthetic_powerlaw(powerlaw, false, 2.1, 100000000);
 	} else if (graph_dir.length() > 0) { // Load the graph from a file
+		if(format.length() == 0){
+			dc.cout() << "No graph format provided. Use snap format" << std::endl;
+			format = "snap";
+		}
 		dc.cout() << "Loading graph" << std::endl;
-		graph.load(graph_dir, line_parser);
+		graph.load(graph_dir, format);
 	} else {
 		dc.cout() << "graph or powerlaw option must be specified" << std::endl;
 		clopts.print_description();
@@ -140,10 +147,7 @@ int main(int argc, char** argv) {
 	// Running The Engine -------------------------------------------------------
 	graphlab::omni_engine<BFS> engine(dc, graph, "sync");
 
-	std::set haha;
-	haha.insert(0);
-	haha.insert(5); 
-	engine.signal(haha, message_data(0, source));
+	engine.signal(source, message_data(0, source));
 	engine.start();
 
 	dc.cout() << engine.num_updates()
