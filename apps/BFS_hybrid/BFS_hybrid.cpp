@@ -2,21 +2,24 @@
 #include <string>
 #include <stdlib.h>
 
-int source = -1;
+// global variable
+// any currency problem?
+int last_iter = 0;
 
 struct vertex_data : graphlab::IS_POD_TYPE {
 	int level;
 	int parent;
-	vertex_data(int level = -1, int parent = -1) : level(level), parent(parent) {}
+	vertex_data(int level = -2, int parent = -1) : level(level), parent(parent) {}
 };
 
-struct message_data : graphlab::IS_POD_TYPE {
+// used in bottom_up
+struct gather_data : graphlab::IS_POD_TYPE {
 	int level;
 	int parent;
-	message_data(int level = -1, int parent = -1): level(level), parent(parent) {}
+	gather_data(int level = -2, int parent = -1): level(level), parent(parent) {}
 
-	message_data & operator+=(const message_data & other){
-		if(level < 0 || other.level >= 0 && level > other.level){
+	gather_data & operator+=(const gather_data & other){
+		if(level < 0){
 			level = other.level;
 			parent = other.parent;
 		}
@@ -24,12 +27,50 @@ struct message_data : graphlab::IS_POD_TYPE {
 	}
 };
 
+// used in top_down
+struct message_data : graphlab::IS_POD_TYPE {
+	bool update_self;
+	int level;
+	int parent;
+	message_data(bool update_self = true, int level = -2, int parent = -1): 
+		update_self(update_self), level(level), parent(parent) {}
+
+	message_data & operator+=(const message_data & other){
+		return *this;
+	}
+};
+
 typedef graphlab::empty edge_data;
 typedef graphlab::distributed_graph<vertex_data, edge_data> graph_type;
 
-class BFS: public graphlab::ivertex_program<graph_type, graphlab::empty, message_data>, public graphlab::IS_POD_TYPE{
+class BFS_bottomup: public graphlab::ivertex_program<graph_type, gather_data, graphlab::empty>, public graphlab::IS_POD_TYPE{
+public:
+	edge_dir_type gather_edges(icontext_type& context, const vertex_type& vertex) const{
+		if(vertex.data().level >= 0){
+			return graphlab::NO_EDGES;
+		}
+		else
+			return graphlab::IN_EDGES;
+	}
+
+	gather_data gather(icontext_type& context, const vertex_type& vertex, edge_type& edge) const{
+		return gather_data(edge.source().data().level + 1, edge.source().id());
+	}
+
+	void apply(icontext_type& context, vertex_type& vertex, const gather_type& total){
+		if(vertex.data().level < 0 && ((gather_data)total).level >= 0){
+			vertex.data().level = total.level;
+			vertex.data().parent = total.parent;
+		}
+	}
+
+	edge_dir_type scatter_edges(icontext_type& context, const vertex_type& vertex) const{
+		return graphlab::NO_EDGES;
+	}
+};
+
+class BFS_topdown: public graphlab::ivertex_program<graph_type, graphlab::empty, message_data>, public graphlab::IS_POD_TYPE{
 private:
-	bool new_frontier = false;
 	message_data state;
 public:
 	void init(icontext_type& context, const vertex_type& vertex, const message_data& message) {
@@ -41,21 +82,23 @@ public:
 	}
 
 	void apply(icontext_type& context, vertex_type& vertex, const gather_type& total){
-		if(vertex.data().level < 0 && state.level >= 0){
-			new_frontier = true;
-			vertex.data().level = state.level;
-			vertex.data().parent = state.parent;
+		if(state.update_self){
+			if(vertex.data().level < 0){
+				vertex.data().level = state.level;
+				vertex.data().parent = state.parent;
+			}
 		}
 	}
 
 	edge_dir_type scatter_edges(icontext_type& context, const vertex_type& vertex) const{
-		if(new_frontier)
-			return graphlab::OUT_EDGES;
-		else
+		if(state.update_self)
 			return graphlab::NO_EDGES;
+		else
+			return graphlab::OUT_EDGES;
 	}
 	void scatter(icontext_type& context, const vertex_type& vertex, edge_type& edge) const{
-		context.signal(edge.target(), message_data(vertex.data().level + 1, vertex.id()));
+		if(!state.update_self)
+			context.signal(edge.target(), message_data(true, vertex.data().level + 1, vertex.id()));
 	}
 };
 
@@ -87,16 +130,28 @@ public:
 	}
 };
 
+bool is_frontier(const graph_type::vertex_type& vertex) {
+  return vertex.data().level == last_iter;
+}
+
+int vertex_outedge_num(const graph_type::vertex_type& vertex) {
+  return 1 + vertex.num_out_edges();
+}
+
 int main(int argc, char** argv) {
 	graphlab::mpi_tools::init(argc, argv);
 	graphlab::distributed_control dc;
 	
 	std::string graph_dir;
 	std::string saveprefix;
+	int source = -1;
 	size_t powerlaw = 0;
+	int threshold = 20;
+
+	int updates = 0;
 
 	// Parse command line options -----------------------------------------------
-	graphlab::command_line_options clopts("PageRank algorithm.");
+	graphlab::command_line_options clopts("Hybrid BFS algorithm.");
 	clopts.attach_option("graph", graph_dir,
 		"The graph file.  If none is provided "
 		"then a toy graph will be created");
@@ -137,17 +192,37 @@ int main(int argc, char** argv) {
 	dc.cout() << "#vertices: " << graph.num_vertices()
 	        << " #edges:" << graph.num_edges() << std::endl;
 
+	threshold = graph.num_edges() / threshold;
+
 	// Running The Engine -------------------------------------------------------
-	graphlab::omni_engine<BFS> engine(dc, graph, "sync");
+	graphlab::omni_engine<BFS_topdown> engine_topdown(dc, graph, "sync");
+	graphlab::omni_engine<BFS_bottomup> engine_bottomup(dc, graph, "sync");
 
-	std::set haha;
-	haha.insert(0);
-	haha.insert(5); 
-	engine.signal(haha, message_data(0, source));
-	engine.start();
+	// signal source
+	engine_topdown.signal(source, message_data(true, 0, -1));
+	engine_topdown.start();
+	updates += engine_topdown.num_updates();
 
-	dc.cout() << engine.num_updates()
-	        << " updates." << std::endl;
+	for(last_iter = 0; last_iter < 10; last_iter ++){
+		// get frontier vertex
+		graphlab::vertex_set frontier = graph.select(is_frontier);
+		// count number
+		int frontier_outedge_num = graph.map_reduce_vertices<int>(vertex_outedge_num, frontier);
+		dc.cout() << last_iter << " " << frontier_outedge_num << std::endl;
+		// if zero, finish
+		if(frontier_outedge_num == 0) break;
+		if (frontier_outedge_num < threshold){
+			engine_topdown.signal_vset(frontier, message_data(false));
+			engine_topdown.start();
+			updates += engine_topdown.num_updates();
+		} else {
+			engine_bottomup.signal_all();
+			engine_bottomup.start();
+			updates += engine_bottomup.num_updates();
+		}
+	}
+
+	dc.cout() << updates << " updates." << std::endl;
 
 
 	// Save the final graph -----------------------------------------------------

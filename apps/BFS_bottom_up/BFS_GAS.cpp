@@ -99,6 +99,7 @@ int main(int argc, char** argv) {
 	
 	std::string graph_dir;
 	std::string saveprefix;
+	std::string format;
 	size_t powerlaw = 0;
 
 	// Parse command line options -----------------------------------------------
@@ -114,6 +115,8 @@ int main(int argc, char** argv) {
 		"sequence of files with prefix saveprefix");
 	clopts.attach_option("source", source,
 		"The source vertice");
+	clopts.attach_option("format", format,
+		"The graph format");
 
 	if(!clopts.parse(argc, argv)) {
 		dc.cout() << "Error in parsing command line arguments." << std::endl;
@@ -126,8 +129,12 @@ int main(int argc, char** argv) {
 		dc.cout() << "Loading synthetic Powerlaw graph." << std::endl;
 		graph.load_synthetic_powerlaw(powerlaw, false, 2.1, 100000000);
 	} else if (graph_dir.length() > 0) { // Load the graph from a file
+		if(format.length() == 0){
+			dc.cout() << "No graph format provided. Use snap format" << std::endl;
+			format = "snap";
+		}
 		dc.cout() << "Loading graph" << std::endl;
-		graph.load(graph_dir, line_parser);
+		graph.load_format(graph_dir, format);
 	} else {
 		dc.cout() << "graph or powerlaw option must be specified" << std::endl;
 		clopts.print_description();
