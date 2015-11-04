@@ -157,8 +157,8 @@ int main(int argc, char** argv) {
 	engine.signal_all();
 	engine.start();
 
-	dc.cout() << engine.num_updates()
-	        << " updates." << std::endl;
+	dc.cout() << engine.num_updates() << " updates." << std::endl;
+	dc.cout() << "Finished in " << engine.elapsed_seconds() << " seconds." << std::endl;
 
 
 	// Save the final graph -----------------------------------------------------

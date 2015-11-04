@@ -19,7 +19,7 @@ struct gather_data : graphlab::IS_POD_TYPE {
 	gather_data(int level = -2, int parent = -1): level(level), parent(parent) {}
 
 	gather_data & operator+=(const gather_data & other){
-		if(level < 0){
+		if(level <= 0){
 			level = other.level;
 			parent = other.parent;
 		}
@@ -58,7 +58,7 @@ public:
 	}
 
 	void apply(icontext_type& context, vertex_type& vertex, const gather_type& total){
-		if(vertex.data().level < 0 && ((gather_data)total).level >= 0){
+		if(vertex.data().level < 0 && ((gather_data)total).level > 0){
 			vertex.data().level = total.level;
 			vertex.data().parent = total.parent;
 		}
@@ -147,9 +147,10 @@ int main(int argc, char** argv) {
 	std::string format;
 	int source = -1;
 	size_t powerlaw = 0;
-	int threshold = 20;
+	int threshold = -1;
 
 	int updates = 0;
+	float seconds = 0;
 
 	// Parse command line options -----------------------------------------------
 	graphlab::command_line_options clopts("Hybrid BFS algorithm.");
@@ -163,9 +164,11 @@ int main(int argc, char** argv) {
 		"If set, will save the resultant pagerank to a "
 		"sequence of files with prefix saveprefix");
 	clopts.attach_option("source", source,
-		"The source vertice");
+		"The source vertice, default 0");
 	clopts.attach_option("format", format,
 		"The graph format");
+	clopts.attach_option("threshold", threshold,
+		"threshold factor, default 2000");
 
 	if(!clopts.parse(argc, argv)) {
 		dc.cout() << "Error in parsing command line arguments." << std::endl;
@@ -193,6 +196,10 @@ int main(int argc, char** argv) {
 		dc.cout() << "No source vertex provided. Use vertex 0 as source" << std::endl;
 		source = 0;
 	}
+	if(threshold <= 0) {
+		dc.cout() << "No threhold factor provided or invalid. Use 2000" << std::endl;
+		threshold = 2000;
+	}
 
 	// must call finalize before querying the graph
 	graph.finalize();
@@ -209,27 +216,33 @@ int main(int argc, char** argv) {
 	engine_topdown.signal(source, message_data(true, 0, -1));
 	engine_topdown.start();
 	updates += engine_topdown.num_updates();
+	seconds += engine_topdown.elapsed_seconds();
 
-	for(last_iter = 0; last_iter < 10; last_iter ++){
+	for(last_iter = 0; ; last_iter ++){
 		// get frontier vertex
 		graphlab::vertex_set frontier = graph.select(is_frontier);
 		// count number
 		int frontier_outedge_num = graph.map_reduce_vertices<int>(vertex_outedge_num, frontier);
-		dc.cout() << last_iter << " " << frontier_outedge_num << std::endl;
+		dc.cout() << "#iter: " << last_iter << " threshold: " << threshold << " #frontier: " << frontier_outedge_num << std::endl;
 		// if zero, finish
 		if(frontier_outedge_num == 0) break;
 		if (frontier_outedge_num < threshold){
+			dc.cout() << "============ use top down ============" << std::endl;
 			engine_topdown.signal_vset(frontier, message_data(false));
 			engine_topdown.start();
 			updates += engine_topdown.num_updates();
+			seconds += engine_topdown.elapsed_seconds();
 		} else {
+			dc.cout() << "============ use bottom up ============" << std::endl;
 			engine_bottomup.signal_all();
 			engine_bottomup.start();
 			updates += engine_bottomup.num_updates();
+			seconds += engine_bottomup.elapsed_seconds();
 		}
 	}
 
 	dc.cout() << updates << " updates." << std::endl;
+	dc.cout() << "Finished in " << seconds << " seconds." << std::endl;
 
 
 	// Save the final graph -----------------------------------------------------

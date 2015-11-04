@@ -128,7 +128,7 @@ int main(int argc, char** argv) {
 			format = "snap";
 		}
 		dc.cout() << "Loading graph" << std::endl;
-		graph.load(graph_dir, format);
+		graph.load_format(graph_dir, format);
 	} else {
 		dc.cout() << "graph or powerlaw option must be specified" << std::endl;
 		clopts.print_description();
@@ -150,9 +150,8 @@ int main(int argc, char** argv) {
 	engine.signal(source, message_data(0, source));
 	engine.start();
 
-	dc.cout() << engine.num_updates()
-	        << " updates." << std::endl;
-
+	dc.cout() << engine.num_updates() << " updates." << std::endl;
+	dc.cout() << "Finished in " << engine.elapsed_seconds() << " seconds." << std::endl;
 
 	// Save the final graph -----------------------------------------------------
 	if (saveprefix != "") {
