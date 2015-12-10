@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 int source = -1;
+int unvisited_num = 0;
 
 struct vertex_data : graphlab::IS_POD_TYPE {
 	int level;
@@ -26,13 +27,6 @@ struct gather_data : graphlab::IS_POD_TYPE {
 
 typedef graphlab::empty edge_data;
 typedef graphlab::distributed_graph<vertex_data, edge_data> graph_type;
-
-void init_vertex(graph_type::vertex_type& vertex) {
-	if(vertex.id() == source){
-		vertex.data().level = 0;
-		vertex.data().parent = source;
-	}
-}
 
 class BFS: public graphlab::ivertex_program<graph_type, gather_data>, public graphlab::IS_POD_TYPE{
 public:
@@ -64,6 +58,27 @@ public:
 	}
 	void scatter(icontext_type& context, const vertex_type& vertex, edge_type& edge) const{ }
 };
+
+typedef graphlab::omni_engine<BFS> engine_type;
+
+void init_vertex(graph_type::vertex_type& vertex) {
+    if(vertex.id() == source){
+        vertex.data().level = 0;
+        vertex.data().parent = source;
+    }
+}
+
+int is_unvisited(engine_type::icontext_type& context, const graph_type::vertex_type& vertex){
+    return (vertex.data().level < 0)? 1:0;
+}
+
+void count_unvisited(engine_type::icontext_type& context, int total){
+    if(total == unvisited_num){
+        context.stop();
+    } else {
+        unvisited_num = total;
+    }
+}
 
 // bool line_parser(graph_type& graph, const std::string& filename, const std::string& textline){
 // 	std::stringstream strm(textline);
@@ -152,7 +167,9 @@ int main(int argc, char** argv) {
 
 	graph.transform_vertices(init_vertex);
 	// Running The Engine -------------------------------------------------------
-	graphlab::omni_engine<BFS> engine(dc, graph, "sync");
+	engine_type engine(dc, graph, "sync");
+    engine.add_vertex_aggregator<int>("count_unvisited_num", is_unvisited, count_unvisited);
+    engine.aggregate_periodic("count_unvisited_num",10);
 
 	engine.signal_all();
 	engine.start();

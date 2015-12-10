@@ -1,0 +1,162 @@
+GRAPHLAB_SUBNET_ID/GRAPHLAB_SUBNET_MASK environment variables not defined.
+Using default values
+Subnet ID: 0.0.0.0
+Subnet Mask: 0.0.0.0
+Will find first IPv4 non-loopback address matching the subnet
+INFO:     dc.cpp(init:573): Cluster of 12 instances created.
+INFO:     distributed_graph.hpp(set_ingress_method:3214): Automatically determine ingress method: grid
+No graph format provided. Use snap format
+Loading graph
+INFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-ao
+INFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-ai
+INFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-aq
+INFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-aa
+INFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-am
+INFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-ab
+INFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-al
+INFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-ac
+INFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-ak
+INFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-ag
+# Directed graph (each unordered pair of nodes is saved once): roadNet-CA.txt 
+# California road network
+# Nodes: 1965206 Edges: 5533214
+# FromNodeId	ToNodeId
+INFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-ah
+INFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-ad
+INFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-ap
+INFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-aj
+INFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-af
+INFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-ae
+INFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-an
+No source vertex provided. Use vertex 0 as source
+INFO:     distributed_ingress_base.hpp(finalize:199): Finalizing Graph...
+INFO:     distributed_ingress_base.hpp(exchange_global_info:546): Graph info: 
+	 nverts: 1965206
+	 nedges: 5533214
+	 nreplicas: 5933677
+	 replication factor: 3.01937
+#vertices: 1965206 #edges:5533214
+INFO:     distributed_ingress_base.hpp(finalize:199): Finalizing Graph...
+INFO:     distributed_ingress_base.hpp(finalize:199): Finalizing Graph...
+INFO:     synchronous_engine.hpp(start:1299): Iteration counter will only output every 5 seconds.
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 0
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 25
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 539
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 51
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 2895
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 76
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 7154
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 101
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 9401
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 128
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 11642
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 154
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 10059
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 181
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 9408
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 207
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 11377
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 233
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 9530
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 259
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 8666
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 285
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 7402
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 313
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 8956
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 340
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 10304
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1424): 368 iterations completed.
+Updates: 3037344
+INFO:     synchronous_engine.hpp(start:1299): Iteration counter will only output every 5 seconds.
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 0
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1965206
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 4
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 467061
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 9
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 440758
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 14
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 414963
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 20
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 384450
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 25
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 357485
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 30
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 329384
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 35
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 303089
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 40
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 279392
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 46
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 254026
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 52
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 227277
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 58
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 202576
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 65
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 179707
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 72
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 158279
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 80
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 136759
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 90
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 114609
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 102
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 94908
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 115
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 72616
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 137
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 29290
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 166
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 10190
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 195
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 8179
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 223
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 8179
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 251
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 8179
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 279
+INFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 8179
+INFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+INFO:     synchronous_engine.hpp(start:1424): 298 iterations completed.
+Updates: 31348640
+34385984 updates.
+Finished in 194.3 seconds.

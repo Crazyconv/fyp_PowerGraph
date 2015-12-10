@@ -3,25 +3,25 @@
 #include <stdlib.h>
 
 // global variable
-// any currency problem?
-int last_iter = 0;
+float threshold = 0.1;
+int unvisited_num = 0;
 
 struct vertex_data : graphlab::IS_POD_TYPE {
-	int level;
+	int dist;
 	int parent;
-	vertex_data(int level = -2, int parent = -1) : level(level), parent(parent) {}
+	vertex_data(int dist = -2, int parent = -1) : dist(dist), parent(parent) {}
 };
 
 // used in bottom_up
 struct gather_data : graphlab::IS_POD_TYPE {
-	int level;
-	int parent;
-	gather_data(int level = -2, int parent = -1): level(level), parent(parent) {}
+	int dist;
+	int id;
+	gather_data(int dist = -2, int id = -1): dist(dist), id(id) {}
 
 	gather_data & operator+=(const gather_data & other){
-		if(level <= 0){
-			level = other.level;
-			parent = other.parent;
+		if(dist <= 0 || (other.dist > 0 && other.dist < dist)){
+			dist = other.dist;
+			id = other.id;
 		}
 		return *this;
 	}
@@ -29,11 +29,9 @@ struct gather_data : graphlab::IS_POD_TYPE {
 
 // used in top_down
 struct message_data : graphlab::IS_POD_TYPE {
-	bool update_self;
-	int level;
-	int parent;
-	message_data(bool update_self = true, int level = -2, int parent = -1): 
-		update_self(update_self), level(level), parent(parent) {}
+	int dist;
+	int id;
+	message_data(int dist = -2, int id = -1): dist(dist), id(id) {}
 
 	message_data & operator+=(const message_data & other){
 		return *this;
@@ -46,7 +44,7 @@ typedef graphlab::distributed_graph<vertex_data, edge_data> graph_type;
 class BFS_bottomup: public graphlab::ivertex_program<graph_type, gather_data, graphlab::empty>, public graphlab::IS_POD_TYPE{
 public:
 	edge_dir_type gather_edges(icontext_type& context, const vertex_type& vertex) const{
-		if(vertex.data().level >= 0){
+		if(vertex.data().dist >= 0){
 			return graphlab::NO_EDGES;
 		}
 		else
@@ -54,14 +52,18 @@ public:
 	}
 
 	gather_data gather(icontext_type& context, const vertex_type& vertex, edge_type& edge) const{
-		return gather_data(edge.source().data().level + 1, edge.source().id());
+		return gather_data(edge.source().data().dist + 1, edge.source().id());
 	}
 
 	void apply(icontext_type& context, vertex_type& vertex, const gather_type& total){
-		if(vertex.data().level < 0 && ((gather_data)total).level > 0){
-			vertex.data().level = total.level;
-			vertex.data().parent = total.parent;
-		}
+		if(vertex.data().dist < 0){
+			if (((gather_data)total).dist > 0){
+				vertex.data().dist = total.dist;
+				vertex.data().parent = total.id;
+			} else {
+				context.signal(vertex);
+			}
+		} 
 	}
 
 	edge_dir_type scatter_edges(icontext_type& context, const vertex_type& vertex) const{
@@ -71,6 +73,7 @@ public:
 
 class BFS_topdown: public graphlab::ivertex_program<graph_type, graphlab::empty, message_data>, public graphlab::IS_POD_TYPE{
 private:
+	bool new_frontier = false;
 	message_data state;
 public:
 	void init(icontext_type& context, const vertex_type& vertex, const message_data& message) {
@@ -82,47 +85,32 @@ public:
 	}
 
 	void apply(icontext_type& context, vertex_type& vertex, const gather_type& total){
-		if(state.update_self){
-			if(vertex.data().level < 0){
-				vertex.data().level = state.level;
-				vertex.data().parent = state.parent;
-			}
+		if(vertex.data().dist < 0 && state.dist >= 0){
+			vertex.data().dist = state.dist;
+			vertex.data().parent = state.id;
+			new_frontier = true;
 		}
 	}
 
 	edge_dir_type scatter_edges(icontext_type& context, const vertex_type& vertex) const{
-		if(state.update_self)
-			return graphlab::NO_EDGES;
-		else
+		if(new_frontier)
 			return graphlab::OUT_EDGES;
+		else
+			return graphlab::NO_EDGES;
 	}
 	void scatter(icontext_type& context, const vertex_type& vertex, edge_type& edge) const{
-		if(!state.update_self)
-			context.signal(edge.target(), message_data(true, vertex.data().level + 1, vertex.id()));
+		context.signal(edge.target(), message_data(vertex.data().dist + 1, vertex.id()));
 	}
 };
 
-bool line_parser(graph_type& graph, const std::string& filename, const std::string& textline){
-	std::stringstream strm(textline);
-	graphlab::vertex_id_type vid;
-
-	strm >> vid;
-	graph.add_vertex(vid, vertex_data());
-	while(1){
-		graphlab::vertex_id_type other_vid;
-		strm >> other_vid;
-		if(strm.fail())
-			return true;
-		graph.add_edge(vid, other_vid);
-	}
-	return true;
-}
+typedef graphlab::omni_engine<BFS_topdown> topdown_engine_type;
+typedef graphlab::omni_engine<BFS_bottomup> bottomup_engine_type;
 
 class graph_writer{
 public:
 	std::string save_vertex(graph_type::vertex_type v){
 		std::stringstream strm;
-		strm << v.id() << "\t" << v.data().level << "\t" << v.data().parent << "\n";
+		strm << v.id() << "\t" << v.data().dist << "\t" << v.data().parent << "\n";
 		return strm.str();
 	} 
 	std::string save_edge(graph_type::edge_type e){
@@ -130,12 +118,25 @@ public:
 	}
 };
 
-bool is_frontier(const graph_type::vertex_type& vertex) {
-  return vertex.data().level == last_iter;
+int is_visited(topdown_engine_type::icontext_type& context, const graph_type::vertex_type& vertex){
+    return (vertex.data().dist >= 0)? 1:0;
 }
 
-int vertex_outedge_num(const graph_type::vertex_type& vertex) {
-  return 1 + vertex.num_out_edges();
+void count_visited(topdown_engine_type::icontext_type& context, int total){
+    if(total >= threshold)
+        context.stop();
+}
+
+int is_unvisited(bottomup_engine_type::icontext_type& context, const graph_type::vertex_type& vertex){
+    return (vertex.data().dist < 0)? 1:0;
+}
+
+void count_unvisited(bottomup_engine_type::icontext_type& context, int total){
+    if(total == unvisited_num){
+        context.stop();
+    } else {
+        unvisited_num = total;
+    }
 }
 
 int main(int argc, char** argv) {
@@ -147,7 +148,6 @@ int main(int argc, char** argv) {
 	std::string format;
 	int source = -1;
 	size_t powerlaw = 0;
-	int threshold = -1;
 
 	int updates = 0;
 	float seconds = 0;
@@ -168,7 +168,7 @@ int main(int argc, char** argv) {
 	clopts.attach_option("format", format,
 		"The graph format");
 	clopts.attach_option("threshold", threshold,
-		"threshold factor, default 2000");
+		"threshold factor, 0.1");
 
 	if(!clopts.parse(argc, argv)) {
 		dc.cout() << "Error in parsing command line arguments." << std::endl;
@@ -197,8 +197,8 @@ int main(int argc, char** argv) {
 		source = 0;
 	}
 	if(threshold <= 0) {
-		dc.cout() << "No threhold factor provided or invalid. Use 2000" << std::endl;
-		threshold = 2000;
+		dc.cout() << "No threhold factor provided or invalid. Use 0.1" << std::endl;
+		threshold = 0.1;
 	}
 
 	// must call finalize before querying the graph
@@ -206,40 +206,29 @@ int main(int argc, char** argv) {
 	dc.cout() << "#vertices: " << graph.num_vertices()
 	        << " #edges:" << graph.num_edges() << std::endl;
 
-	threshold = graph.num_edges() / threshold;
+	threshold *= graph.num_vertices();
 
 	// Running The Engine -------------------------------------------------------
-	graphlab::omni_engine<BFS_topdown> engine_topdown(dc, graph, "sync");
-	graphlab::omni_engine<BFS_bottomup> engine_bottomup(dc, graph, "sync");
+	topdown_engine_type engine_topdown(dc, graph, "sync");
+	bottomup_engine_type engine_bottomup(dc, graph, "sync");
+
+	// global aggregator
+	engine_topdown.add_vertex_aggregator<int>("count_visited_num", is_visited, count_visited);
+    engine_topdown.aggregate_periodic("count_visited_num",10);
 
 	// signal source
-	engine_topdown.signal(source, message_data(true, 0, -1));
+	engine_topdown.signal(source, message_data(0, source));
 	engine_topdown.start();
 	updates += engine_topdown.num_updates();
 	seconds += engine_topdown.elapsed_seconds();
 
-	for(last_iter = 0; ; last_iter ++){
-		// get frontier vertex
-		graphlab::vertex_set frontier = graph.select(is_frontier);
-		// count number
-		int frontier_outedge_num = graph.map_reduce_vertices<int>(vertex_outedge_num, frontier);
-		dc.cout() << "#iter: " << last_iter << " threshold: " << threshold << " #frontier: " << frontier_outedge_num << std::endl;
-		// if zero, finish
-		if(frontier_outedge_num == 0) break;
-		if (frontier_outedge_num < threshold){
-			dc.cout() << "============ use top down ============" << std::endl;
-			engine_topdown.signal_vset(frontier, message_data(false));
-			engine_topdown.start();
-			updates += engine_topdown.num_updates();
-			seconds += engine_topdown.elapsed_seconds();
-		} else {
-			dc.cout() << "============ use bottom up ============" << std::endl;
-			engine_bottomup.signal_all();
-			engine_bottomup.start();
-			updates += engine_bottomup.num_updates();
-			seconds += engine_bottomup.elapsed_seconds();
-		}
-	}
+	// switch to bottom up
+	engine_bottomup.add_vertex_aggregator<int>("count_unvisited_num", is_unvisited, count_unvisited);
+    engine_bottomup.aggregate_periodic("count_unvisited_num",10);
+	engine_bottomup.signal_all();
+	engine_bottomup.start();
+	updates += engine_bottomup.num_updates();
+	seconds += engine_bottomup.elapsed_seconds();
 
 	dc.cout() << updates << " updates." << std::endl;
 	dc.cout() << "Finished in " << seconds << " seconds." << std::endl;

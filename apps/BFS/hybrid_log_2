@@ -1,0 +1,288 @@
+GRAPHLAB_SUBNET_ID/GRAPHLAB_SUBNET_MASK environment variables not defined.
+Using default values
+Subnet ID: 0.0.0.0
+Subnet Mask: 0.0.0.0
+Will find first IPv4 non-loopback address matching the subnet
+[1;32mINFO:     dc.cpp(init:573): Cluster of 12 instances created.
+[0m[1;32mINFO:     distributed_graph.hpp(set_ingress_method:3214): Automatically determine ingress method: grid
+[0mNo graph format provided. Use snap format
+Loading graph
+[1;32mINFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-ah
+[0m[1;32mINFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-al
+[0m[1;32mINFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-ak
+[0m[1;32mINFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-aj
+[0m[1;32mINFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-ap
+[0m[1;32mINFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-ad
+[0m[1;32mINFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-aa
+[0m[1;32m[1;32m[1;32mINFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-ag
+[0mINFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-ai
+[0mINFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-ae
+[0m[1;32mINFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-aq
+[0m# Directed graph (each unordered pair of nodes is saved once): roadNet-CA.txt 
+# California road network
+# Nodes: 1965206 Edges: 5533214
+# FromNodeId	ToNodeId
+[1;32mINFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-af
+[0m[1;32mINFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-am
+[0m[1;32mINFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-ac
+[0m[1;32m[1;32mINFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-ao
+[0mINFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-ab
+[0m[1;32mINFO:     distributed_graph.hpp(load_from_posixfs:2199): Loading graph from file: /export/student/f81501wt/dataset/roadNet-CA-split/roadNet-CA-an
+[0mNo source vertex provided. Use vertex 0 as source
+[1;32mINFO:     distributed_ingress_base.hpp(finalize:199): Finalizing Graph...
+[0m[1;32mINFO:     distributed_ingress_base.hpp(exchange_global_info:546): Graph info: 
+	 nverts: 1965206
+	 nedges: 5533214
+	 nreplicas: 5933677
+	 replication factor: 3.01937
+[0m#vertices: 1965206 #edges:5533214
+[1;32mINFO:     distributed_ingress_base.hpp(finalize:199): Finalizing Graph...
+[0m[1;32mINFO:     distributed_ingress_base.hpp(finalize:199): Finalizing Graph...
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1299): Iteration counter will only output every 5 seconds.
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 0
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 27
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 697
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 53
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 2957
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 80
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 6915
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 107
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 11120
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 134
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 12022
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1424): 160 iterations completed.
+[0mUpdates: 1006409
+[1;32mINFO:     synchronous_engine.hpp(start:1299): Iteration counter will only output every 5 seconds.
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 0
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1965206
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 4
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1455732
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 8
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1438625
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 12
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1421099
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 16
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1403391
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 20
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1385162
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 24
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1366692
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 28
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1348879
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 32
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1330182
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 36
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1310913
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 40
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1290704
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 44
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1269247
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 48
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1247469
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 52
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1223964
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 55
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1205607
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 59
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1182032
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 63
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1158789
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 67
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1136917
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 71
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1117401
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 75
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1098643
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 79
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1080556
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 83
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1063424
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 87
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1045885
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 91
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1027707
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 95
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 1009509
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 99
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 992293
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 103
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 975460
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 107
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 958165
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 111
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 940946
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 115
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 924448
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 119
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 908314
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 123
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 893613
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 127
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 879056
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 131
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 864548
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 135
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 849437
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 139
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 833308
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 143
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 816905
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 147
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 800691
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 151
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 784334
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 155
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 767157
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 159
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 749662
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 163
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 730941
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 167
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 710529
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 171
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 688811
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 175
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 666929
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 180
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 641598
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 185
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 616883
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 190
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 589706
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 195
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 561866
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 200
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 534023
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 204
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 511774
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 209
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 483861
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 214
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 456237
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 219
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 430467
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 224
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 404743
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 229
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 379221
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 234
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 351875
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 239
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 323788
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 244
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 298216
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 250
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 270712
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 256
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 245075
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 263
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 214345
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 270
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 189100
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 277
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 167352
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 285
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 144348
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 293
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 124968
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 302
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 107466
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 315
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 86898
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 331
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 56282
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 357
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 17049
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 384
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 8998
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 412
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 8179
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 440
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 8179
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1314): 0: Starting iteration: 467
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1363): 	Active vertices: 8179
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1412): 	 Running Aggregators
+[0m[1;32mINFO:     synchronous_engine.hpp(start:1424): 472 iterations completed.
+[0mUpdates: 235542974
+236549383 updates.
+Finished in 445.5 seconds.

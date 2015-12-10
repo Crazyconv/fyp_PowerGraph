@@ -16,10 +16,6 @@ struct message_data : graphlab::IS_POD_TYPE {
 	message_data(int level = -1, int parent = -1): level(level), parent(parent) {}
 
 	message_data & operator+=(const message_data & other){
-		if(level < 0 || other.level >= 0 && level > other.level){
-			level = other.level;
-			parent = other.parent;
-		}
 		return *this;
 	}
 };
